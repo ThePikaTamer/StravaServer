@@ -1,25 +1,53 @@
+package com.example.metaauth.server;
 
-public class MetaServer 
-{
-    private final int port;
+import com.example.metaauth.storage.UserStorage;
 
-    public MetaServer(int port) 
-    {
-        this.port = port;
-    }
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-    public void start() 
-    {
-        try (ServerSocket serverSocket = new ServerSocket(port)) 
-        {
-            System.out.println("Meta Server listening on port " + port);
-            while (true) 
-            {
-                Socket clientSocket = serverSocket.accept();
-                new Thread(new ClientHandler(clientSocket)).start();
+public class MetaServer {
+    public static void main(String[] args) {
+        final int PORT = 8081;
+
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Meta Server running on port " + PORT);
+
+            while (true) {
+                try (Socket clientSocket = serverSocket.accept();
+                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+
+                    String request = in.readLine();
+                    String[] parts = request.split(";");
+                    String command = parts[0];
+                    String email = parts[1];
+                    String response = "INVALID";
+
+                    switch (command) {
+                        case "isRegistered":
+                            response = UserStorage.isEmailRegistered(email) ? "TRUE" : "FALSE";
+                            break;
+
+                        case "validate":
+                            String password = parts[2];
+                            response = UserStorage.validateCredentials(email, password) ? "TRUE" : "FALSE";
+                            break;
+
+                        default:
+                            response = "UNKNOWN_COMMAND";
+                            break;
+                    }
+
+                    out.println(response);
+                } catch (Exception e) {
+                    System.err.println("Error handling client: " + e.getMessage());
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Server error: " + e.getMessage());
         }
     }
 }
