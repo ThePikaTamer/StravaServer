@@ -1,6 +1,4 @@
-package com.example.metaauth.server;
-
-import com.example.metaauth.storage.UserStorage;
+package main.es.deusto.sd.server;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

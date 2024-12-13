@@ -1,4 +1,4 @@
-package com.example.googleauth.model;
+package es.deusto.sd.server;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

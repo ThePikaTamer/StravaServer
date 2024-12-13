@@ -1,6 +1,6 @@
-package com.example.googleauth.controller;
+package es.deusto.sd.server;
 
-import com.example.googleauth.service.AuthService;
+import es.deusto.sd.server.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

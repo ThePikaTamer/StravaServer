@@ -1,7 +1,7 @@
-package com.example.googleauth.service;
+package es.deusto.sd.server;
 
-import com.example.googleauth.model.User;
-import com.example.googleauth.repository.UserRepository;
+import es.deusto.sd.server.User;
+import es.deusto.sd.server.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
